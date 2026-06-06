@@ -1,5 +1,6 @@
 using EventStaffingPlatform.Host;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<UsersDbContext>(options 
@@ -48,6 +49,19 @@ app.MapPost("/vacancies/new_vacancy", async (VacancyModel vacancy, VacanciesDbCo
     await context.SaveChangesAsync();
 });
 
+app.MapPost("/requirements/requirement_types/create_new", async (RequirementTypeModel requirementType, VacanciesDbContext context) =>
+{
+    RequirementType newRequirementType = new()
+    {
+        Name = requirementType.Name,
+        Caption = requirementType.Caption,
+        ValueType = requirementType.ValueType,
+        ValueConfiguration = requirementType.ValueConfiguration
+    };
+    await context.RequirementTypes.AddAsync(newRequirementType);
+    await context.SaveChangesAsync();
+});
+
 app.Run();
 
 record UserModel(string Login, string Password, string FirstName, string LastName, char Sex, DateTime BirthDate, string? Email, string? PhoneNumber);
@@ -55,3 +69,5 @@ record UserModel(string Login, string Password, string FirstName, string LastNam
 record VacancyModel(string Title, string? Description, VacancyRequirement[]? Requirements, string Conditions, string Functions);
 
 record VacancyRequirement(int RequirementTypeId, string Value);
+
+record RequirementTypeModel(string Name, string Caption, string ValueType, string ValueConfiguration);
