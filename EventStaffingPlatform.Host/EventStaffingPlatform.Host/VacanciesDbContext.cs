@@ -14,5 +14,7 @@ public class VacanciesDbContext(DbContextOptions options) : DbContext(options)
 	{
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.ApplyConfiguration(new VacancyEntityConfiguration());
+		modelBuilder.ApplyConfiguration(new RequirementEntityConfiguration());
+		modelBuilder.ApplyConfiguration(new RequirementTypeEntityConfiguration());
 	}
 }
