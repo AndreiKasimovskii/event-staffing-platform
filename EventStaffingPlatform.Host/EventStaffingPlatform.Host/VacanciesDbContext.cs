@@ -51,6 +51,7 @@ public class VacancyEntityConfiguration : IEntityTypeConfiguration<Vacancy>
 			.HasColumnName("expiration_date");
 
 		builder.Property(v => v.Status)
-			.HasColumnType("status");
+			.HasColumnName("status")
+			.HasConversion<string>();
 	}
 }
