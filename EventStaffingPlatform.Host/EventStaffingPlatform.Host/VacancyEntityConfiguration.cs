@@ -17,10 +17,6 @@ public class VacancyEntityConfiguration : IEntityTypeConfiguration<Vacancy>
 		builder.Property(v => v.Description)
 			.HasColumnName("description");
 
-		builder.Property(v => v.Requirements)
-			.HasColumnName("requirements")
-			.IsRequired();
-
 		builder.Property(v => v.Functions)
 			.HasColumnName("functions")
 			.IsRequired();
