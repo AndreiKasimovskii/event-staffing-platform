@@ -27,12 +27,3 @@ public class Vacancy
 
 	public VacancyStatus Status { get; set; }
 }
-
-/// <summary>
-/// Статус вакансии
-/// </summary>
-public enum VacancyStatus
-{
-	Open = 1,
-	Close = 2
-}
