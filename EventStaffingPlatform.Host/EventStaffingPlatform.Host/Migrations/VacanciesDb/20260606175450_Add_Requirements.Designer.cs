@@ -3,6 +3,7 @@ using System;
 using EventStaffingPlatform.Host;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
 {
     [DbContext(typeof(VacanciesDbContext))]
-    partial class VacanciesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606175450_Add_Requirements")]
+    partial class Add_Requirements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
