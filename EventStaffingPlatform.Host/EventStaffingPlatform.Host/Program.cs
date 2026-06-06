@@ -26,8 +26,23 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/", () => "Hello World!");
+app.MapPost("/vacancies/new_vacancy", async (VacancyModel vacancy, VacanciesDbContext context) =>
+{
+    Vacancy newVacancy = new()
+    {
+        Title = vacancy.Title,
+        Requirements = vacancy.Requirements,
+        Conditions = vacancy.Conditions,
+        Functions = vacancy.Functions,
+        CreateDate = DateTimeOffset.UtcNow,
+        Status = VacancyStatus.Open
+    };
+    await context.Vacancies.AddAsync(newVacancy);
+    await context.SaveChangesAsync();
+});
 
 app.Run();
 
 record UserModel(string Login, string Password, string FirstName, string LastName, char Sex, DateTime BirthDate, string? Email, string? PhoneNumber);
+
+record VacancyModel(string Title, string? Description, string Requirements, string Conditions, string Functions);
