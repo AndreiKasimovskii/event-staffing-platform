@@ -11,8 +11,6 @@ public class Vacancy
 
 	public string? Description { get; set; }
 
-	public required string Requirements { get; set; }
-
 	public required string Functions { get; set; }
 
 	public required string Conditions { get; set; }
@@ -26,4 +24,6 @@ public class Vacancy
 	public DateTimeOffset? ExpirationDate { get; set; }
 
 	public VacancyStatus Status { get; set; }
+
+	public List<Requirement>? Requirements { get; set; }
 }
