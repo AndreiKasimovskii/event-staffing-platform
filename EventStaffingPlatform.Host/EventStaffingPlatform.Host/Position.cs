@@ -23,7 +23,7 @@ public class Position
 	/// <summary>
 	/// Обязанности
 	/// </summary>
-	public required string Requirements { get; set; }
+	public string? Requirements { get; set; }
 
 	/// <summary>
 	/// Условия
