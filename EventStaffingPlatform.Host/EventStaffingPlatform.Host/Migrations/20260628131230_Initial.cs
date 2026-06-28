@@ -4,34 +4,31 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
+namespace EventStaffingPlatform.Host.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCoreDb : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "vacancies",
+                name: "positions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
-                    requirements = table.Column<string>(type: "text", nullable: false),
-                    functions = table.Column<string>(type: "text", nullable: false),
-                    conditions = table.Column<string>(type: "text", nullable: false),
-                    create_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    requirements = table.Column<string>(type: "jsonb", nullable: false),
+                    conditions = table.Column<string>(type: "jsonb", nullable: false),
+                    update_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdateDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    close_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    expiration_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_vacancies", x => x.Id);
+                    table.PrimaryKey("PK_positions", x => x.Id);
                 });
         }
 
@@ -39,7 +36,7 @@ namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "vacancies");
+                name: "positions");
         }
     }
 }

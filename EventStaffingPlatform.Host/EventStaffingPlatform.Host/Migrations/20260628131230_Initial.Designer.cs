@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
+namespace EventStaffingPlatform.Host.Migrations
 {
-    [DbContext(typeof(VacanciesDbContext))]
-    [Migration("20260606080938_InitialCoreDb")]
-    partial class InitialCoreDb
+    [DbContext(typeof(PositionsDbContext))]
+    [Migration("20260628131230_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EventStaffingPlatform.Host.Vacancy", b =>
+            modelBuilder.Entity("EventStaffingPlatform.Host.Position", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,35 +33,22 @@ namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTimeOffset?>("CloseDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("close_date");
-
                     b.Property<string>("Conditions")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("conditions");
 
                     b.Property<DateTimeOffset>("CreateDate")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnName("create_date");
+                        .HasColumnName("update_date");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<DateTimeOffset?>("ExpirationDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("expiration_date");
-
-                    b.Property<string>("Functions")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("functions");
-
                     b.Property<string>("Requirements")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("requirements");
 
                     b.Property<string>("Status")
@@ -80,7 +67,7 @@ namespace EventStaffingPlatform.Host.Migrations.VacanciesDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("vacancies", (string)null);
+                    b.ToTable("positions", (string)null);
                 });
 #pragma warning restore 612, 618
         }
