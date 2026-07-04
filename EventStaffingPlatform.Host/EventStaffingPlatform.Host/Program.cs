@@ -6,12 +6,15 @@ builder.Services.AddDbContext<PositionsDbContext>(options =>
 {
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("PositionsConncection"),
-        npgsqlOptions => npgsqlOptions.CommandTimeout(30).MigrationsHistoryTable("__ef_migrations_history"))
-    .LogTo(
-        Console.WriteLine,
-        [DbLoggerCategory.Database.Command.Name],
-        LogLevel.Information)
-    .EnableDetailedErrors();
+        npgsqlOptions => npgsqlOptions.CommandTimeout(30).MigrationsHistoryTable("__ef_migrations_history"));
+
+    if (builder.Environment.IsDevelopment())
+        options.LogTo(
+            Console.WriteLine,
+            [DbLoggerCategory.Database.Command.Name],
+            LogLevel.Information)
+        .EnableDetailedErrors()
+        .EnableSensitiveDataLogging();
 });
 builder.Services.AddTransient<IPositionService, PositionService>();
 
@@ -28,9 +31,15 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/positions/new_position", async (Position position, IPositionService service) =>
+app.MapPost("/positions/new_position", async (PositionDto position, IPositionService service) =>
 {
-    await service.CreatePosition(position);
+    var result = await service.CreatePosition(position);
+    if (result.IsSuccess)
+        return Results.Created();
+    else
+        return Results.UnprocessableEntity();
 });
 
 app.Run();
+
+public record PositionDto(string Title, string? Description, string? Requirements, string Conditions);
