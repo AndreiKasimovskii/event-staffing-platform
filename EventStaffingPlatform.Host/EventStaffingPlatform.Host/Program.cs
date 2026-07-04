@@ -1,4 +1,5 @@
 using EventStaffingPlatform.Host;
+using EventStaffingPlatform.Host.Positions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
