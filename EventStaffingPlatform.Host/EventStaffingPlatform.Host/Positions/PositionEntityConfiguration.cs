@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EventStaffingPlatform.Host;
+namespace EventStaffingPlatform.Host.Positions;
 
 public class PositionEntityConfiguration : IEntityTypeConfiguration<Position>
 {

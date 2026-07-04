@@ -1,4 +1,4 @@
-﻿namespace EventStaffingPlatform.Host;
+﻿namespace EventStaffingPlatform.Host.Positions;
 
 /// <summary>
 /// Вакансия

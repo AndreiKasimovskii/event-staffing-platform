@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace EventStaffingPlatform.Host;
+namespace EventStaffingPlatform.Host.Positions;
 
 public class PositionService(PositionsDbContext positionsDbContext) : IPositionService
 {
