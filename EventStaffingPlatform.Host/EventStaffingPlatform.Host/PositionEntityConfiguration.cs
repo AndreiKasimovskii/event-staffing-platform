@@ -30,12 +30,12 @@ public class PositionEntityConfiguration : IEntityTypeConfiguration<Position>
 			.HasColumnName("create_date")
 			.IsRequired();
 
-		builder.Property(v => v.CreateDate)
-			.HasColumnName("update_date")
-			.IsRequired();
+		builder.Property(v => v.UpdateDate)
+			.HasColumnName("update_date");
 
 		builder.Property(v => v.Status)
 			.HasColumnName("status")
-			.HasConversion<string>();
+			.HasConversion<string>()
+			.IsRequired();
 	}
 }
