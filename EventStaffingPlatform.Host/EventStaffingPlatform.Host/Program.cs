@@ -1,20 +1,38 @@
-using EventStaffingPlatform.Host;
+using EventStaffingPlatform.Host.Events;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<UsersDbContext>(options 
-    => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<VacanciesDbContext>(options =>
+
+builder.Services.AddSingleton(sp =>
 {
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("VacaniesDbConnection"),
-        npgsqlOptions => npgsqlOptions.CommandTimeout(30).MigrationsHistoryTable("__ef_migrations_history"))
-    .LogTo(
-        Console.WriteLine,
-        [DbLoggerCategory.Database.Command.Name],
-        LogLevel.Information)
-    .EnableDetailedErrors();
+    var connectionString = builder.Configuration.GetConnectionString("EspDbConnectionString")
+        ?? throw new InvalidOperationException("Connection string 'EspDbConnectionString' is missing.");
+
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+    //dataSourceBuilder.EnableDynamicJson();
+    return dataSourceBuilder.Build();
 });
+
+builder.Services.AddDbContext<EventDbContext>((sp, options)=>
+{
+    var dataSource = sp.GetRequiredService<NpgsqlDataSource>();
+    options.UseNpgsql(
+        dataSource,
+        npgsqlOptions => npgsqlOptions.CommandTimeout(30).MigrationsHistoryTable("__ef_migrations_history"));
+
+    if (builder.Environment.IsDevelopment())
+        options.LogTo(
+            Console.WriteLine,
+            [DbLoggerCategory.Database.Command.Name],
+            LogLevel.Information)
+        .EnableDetailedErrors()
+        .EnableSensitiveDataLogging();
+});
+//builder.Services.AddTransient<IPositionService, PositionService>();
+//builder.Services.AddTransient<IConditionsService, ConditionsService>();
+
+#region Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -26,8 +44,28 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/", () => "Hello World!");
+//app.MapPost("/positions/new_position", async (PositionDto position, IPositionService service) =>
+//{
+//    var result = await service.CreatePosition(position);
+//    if (result.IsSuccess)
+//        return Results.Created();
+//    else
+//        return Results.UnprocessableEntity();
+//});
+
+//app.MapPost("/conditions/new", async (ConditionTemplateDto conditionTemplate, IConditionsService service) =>
+//{
+//    var result = await service.CreateConditionTemplate(conditionTemplate);
+//    if (result.IsSuccess)
+//        return Results.Created();
+//    else
+//        return Results.UnprocessableEntity();
+//});
 
 app.Run();
 
-record UserModel(string Login, string Password, string FirstName, string LastName, char Sex, DateTime BirthDate, string? Email, string? PhoneNumber);
+public record PositionDto(string Title, string? Description, string? Requirements, ConditionDto[] Conditions);
+
+public record ConditionDto(string Name, string Value);
+
+public record ConditionTemplateDto(string Name, string Caption, string Template);
