@@ -4,7 +4,7 @@ namespace EventStaffingPlatform.Host.Events;
 
 public class EventDbContext(DbContextOptions options) : DbContext(options)
 {
-	public DbSet<EventStorageEntity> Events { get; set; }
+	public DbSet<EventStorageEntity> Events { get; set; } = null!;
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
