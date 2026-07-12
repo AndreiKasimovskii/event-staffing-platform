@@ -2,5 +2,5 @@
 
 public interface IEventsRepository
 {
-	Task<bool> CreateEvent(EventStorageEntity entity);
+	Task<bool> CreateEventAsync(EventStorageEntity entity);
 }
