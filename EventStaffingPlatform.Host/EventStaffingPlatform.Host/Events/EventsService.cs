@@ -11,7 +11,7 @@ public class EventsService(IEventsRepository eventsRepository) : IEventsService
 			throw new ArgumentException("Event address cannot be empty or contains only space!", nameof(eventDto.Address));
 
 		if (eventDto.StartEventDate.CompareTo(eventDto.EndEventDate) > 0)
-			throw new ArgumentException("Event start date cannot be later than end date!", nameof(eventDto.EndEventDate));
+			throw new ArgumentException("Event end date cannot be earlier than start date!", nameof(eventDto.EndEventDate));
 
 		if (eventDto.StartEventDate.UtcDateTime.Date.CompareTo(DateTime.UtcNow.Date) < 0)
 			throw new ArgumentException("Event start date cannot be earlier than today", nameof(eventDto.StartEventDate));
