@@ -5,24 +5,24 @@ public class EventsService(IEventsRepository eventsRepository) : IEventsService
 	public async Task<bool> CreateNewEvent(EventDto eventDto)
 	{
 		if (string.IsNullOrWhiteSpace(eventDto.Title))
-			throw new Exception("Event title cannot be empty or contains only space!");
+			throw new ArgumentException("Event title cannot be empty or contains only space!", nameof(eventDto.Title));
 
 		if(string.IsNullOrWhiteSpace(eventDto.Address))
-			throw new Exception("Event address cannot be empty or contains only space!");
+			throw new ArgumentException("Event address cannot be empty or contains only space!", nameof(eventDto.Address));
 
 		if (eventDto.StartEventDate.CompareTo(eventDto.EndEventDate) > 0)
-			throw new Exception("Event start date cannot be later than end date!");
+			throw new ArgumentException("Event start date cannot be later than end date!", nameof(eventDto.EndEventDate));
 
-		if (eventDto.StartEventDate < DateTimeOffset.Now.Date)
-			throw new Exception("Event start date cannot be earlier then today");
+		if (eventDto.StartEventDate.Date.CompareTo(DateTime.Now.Date) < 0)
+			throw new ArgumentException("Event start date cannot be earlier than today", nameof(eventDto.EndEventDate));
 
 		EventStorageEntity eventStorageEntity = new()
 		{
 			Title = eventDto.Title,
 			Description = eventDto.Description,
 			Address = eventDto.Address,
-			StartEventDate = eventDto.StartEventDate.UtcDateTime,
-			EndEventDate = eventDto.EndEventDate.UtcDateTime
+			StartEventDate = eventDto.StartEventDate.ToUniversalTime(),
+			EndEventDate = eventDto.EndEventDate.ToUniversalTime()
 		};
 
 		return await eventsRepository.CreateEventAsync(eventStorageEntity);
