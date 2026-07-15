@@ -49,11 +49,11 @@ app.MapPost("/events/create", async (EventDto newEvent, IEventsService service) 
 {
     try
     {
-        var result = await service.CreateNewEvent(newEvent);
-        if (result)
-            return Results.Created("/events/create", null);
-        else
-            return Results.Problem(statusCode: StatusCodes.Status500InternalServerError);
+		var result = await service.CreateNewEvent(newEvent);
+		if (result)
+			return Results.Ok();
+		else
+			return Results.Problem(statusCode: StatusCodes.Status500InternalServerError);
     }
     catch(ArgumentException ex)
     {
