@@ -42,4 +42,9 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapPost("/events/create", (EventDto newEvent) =>
+{
+    return Results.Created();
+});
+
 app.Run();
