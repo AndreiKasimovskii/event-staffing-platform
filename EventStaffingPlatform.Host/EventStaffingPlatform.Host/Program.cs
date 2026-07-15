@@ -29,6 +29,9 @@ builder.Services.AddDbContext<EventDbContext>((sp, options)=>
         .EnableSensitiveDataLogging();
 });
 
+builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+builder.Services.AddScoped<IEventsService, EventsService>();
+
 #region Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -42,9 +45,23 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/events/create", (EventDto newEvent) =>
+app.MapPost("/events/create", async (EventDto newEvent, IEventsService service) =>
 {
-    return Results.Created();
+    try
+    {
+		var result = await service.CreateNewEvent(newEvent);
+		if (result)
+			return Results.Ok();
+		else
+			return Results.Problem(statusCode: StatusCodes.Status500InternalServerError);
+    }
+    catch(ArgumentException ex)
+    {
+        return Results.ValidationProblem(new Dictionary<string, string[]>
+        {
+            [ex.ParamName ?? "Event"] = [ex.Message]
+        });
+    }
 });
 
 app.Run();
