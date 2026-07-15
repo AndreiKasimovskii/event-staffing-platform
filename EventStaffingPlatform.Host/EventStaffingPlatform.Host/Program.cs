@@ -51,13 +51,13 @@ app.MapPost("/events/create", async (EventDto newEvent, IEventsService service) 
     {
         var result = await service.CreateNewEvent(newEvent);
         if (result)
-            return Results.Created();
+            return Results.Created("/events/create", null);
         else
             return Results.UnprocessableEntity();
     }
-    catch(Exception ex)
+    catch(ArgumentException ex)
     {
-        return Results.ValidationProblem([new KeyValuePair<string, string[]>("Exception", [ex.Message])]);
+        return Results.ValidationProblem([new KeyValuePair<string, string[]>("Exception", [ex.Message, ex.ParamName ?? string.Empty])]);
     }
 });
 
