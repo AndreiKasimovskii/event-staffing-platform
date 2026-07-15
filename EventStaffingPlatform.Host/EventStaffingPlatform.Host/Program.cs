@@ -53,11 +53,14 @@ app.MapPost("/events/create", async (EventDto newEvent, IEventsService service) 
         if (result)
             return Results.Created("/events/create", null);
         else
-            return Results.UnprocessableEntity();
+            return Results.Problem(statusCode: StatusCodes.Status500InternalServerError);
     }
     catch(ArgumentException ex)
     {
-        return Results.ValidationProblem([new KeyValuePair<string, string[]>("Exception", [ex.Message, ex.ParamName ?? string.Empty])]);
+        return Results.ValidationProblem(new Dictionary<string, string[]>
+        {
+            [ex.ParamName ?? "Event"] = [ex.Message]
+        });
     }
 });
 

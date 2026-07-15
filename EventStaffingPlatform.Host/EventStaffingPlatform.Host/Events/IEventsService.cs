@@ -2,5 +2,5 @@
 
 public interface IEventsService
 {
-	public Task<bool> CreateNewEvent(EventDto eventDto);
+	Task<bool> CreateNewEvent(EventDto eventDto);
 }

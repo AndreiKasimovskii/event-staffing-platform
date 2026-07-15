@@ -13,8 +13,8 @@ public class EventsService(IEventsRepository eventsRepository) : IEventsService
 		if (eventDto.StartEventDate.CompareTo(eventDto.EndEventDate) > 0)
 			throw new ArgumentException("Event start date cannot be later than end date!", nameof(eventDto.EndEventDate));
 
-		if (eventDto.StartEventDate.Date.CompareTo(DateTime.Now.Date) < 0)
-			throw new ArgumentException("Event start date cannot be earlier than today", nameof(eventDto.EndEventDate));
+		if (eventDto.StartEventDate.UtcDateTime.Date.CompareTo(DateTime.UtcNow.Date) < 0)
+			throw new ArgumentException("Event start date cannot be earlier than today", nameof(eventDto.StartEventDate));
 
 		EventStorageEntity eventStorageEntity = new()
 		{
