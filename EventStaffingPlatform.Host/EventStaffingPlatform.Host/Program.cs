@@ -45,11 +45,11 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/events/create", async (EventDto newEvent, IEventsService service) =>
+app.MapPost("/events/create", async (CreateEventRequest request, IEventsService service) =>
 {
     try
     {
-		var result = await service.CreateNewEvent(newEvent);
+		var result = await service.CreateNewEvent(request);
 		if (result)
 			return Results.Ok();
 		else
