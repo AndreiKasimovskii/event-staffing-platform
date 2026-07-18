@@ -26,4 +26,12 @@ public interface IEventsRepository
 	/// <param name="cancellationToken">Токен отмены операции</param>
 	/// <returns>Данные мероприятия</returns>
 	Task<EventStorageEntity?> GetEventByIdAsync(int id, CancellationToken cancellationToken);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="deletedEvent"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task DeleteAsync(EventStorageEntity deletedEvent, CancellationToken cancellationToken);
 }
