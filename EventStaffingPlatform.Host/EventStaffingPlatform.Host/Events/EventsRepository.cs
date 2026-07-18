@@ -25,4 +25,10 @@ public class EventsRepository(EventDbContext context) : IEventsRepository
 	{
 		return await context.Events.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 	}
+
+	public async Task DeleteAsync(EventStorageEntity deletedEvent, CancellationToken cancellationToken)
+	{
+		context.Events.Remove(deletedEvent);
+		await context.SaveChangesAsync(cancellationToken);
+	}
 }
