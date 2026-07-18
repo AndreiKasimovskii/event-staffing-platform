@@ -12,7 +12,7 @@ public interface IEventsRepository
 	Task<EventStorageEntity[]> GetAllEventsAsync(CancellationToken cancellationToken);
 
 	/// <summary>
-	/// Получение акутальных мероприятий
+	/// Получение актуальных мероприятий
 	/// </summary>
 	/// <param name="currentDate">Текущая дата</param>
 	/// <param name="cancellationToken">Токен отмены операции</param>
