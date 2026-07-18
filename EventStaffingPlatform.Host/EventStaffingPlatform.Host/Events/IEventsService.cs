@@ -25,4 +25,12 @@ public interface IEventsService
 	/// <param name="cancellationToken">Токен отмены операции</param>
 	/// <returns>Данные мероприятия</returns>
 	Task<GettingEventResult> GetEventAsync(int id, CancellationToken cancellationToken);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="cancellationToken"></param>
+	/// <returns></returns>
+	Task<DeletingEventResult> DeleteEventAsync(int id, CancellationToken cancellationToken);
 }

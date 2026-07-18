@@ -47,6 +47,26 @@ public class EventsService(IEventsRepository eventsRepository) : IEventsService
 			return new(false, null);
 		return new(true, new(concreteEvent.Id, concreteEvent.Title, concreteEvent.Description, concreteEvent.Address, concreteEvent.StartEventDate, concreteEvent.EndEventDate));
 	}
+
+	public async Task<DeletingEventResult> DeleteEventAsync(int id, CancellationToken cancellationToken)
+	{
+		var deletedEvent = await eventsRepository.GetEventByIdAsync(id, cancellationToken);
+		if(deletedEvent == null)
+		{
+			return new(false, ReasonType.EventNotFound);
+		}
+
+		await eventsRepository.DeleteAsync(deletedEvent, cancellationToken);
+		return new(true, ReasonType.None);
+	}
 }
 
 public record GettingEventResult(bool IsSuccess, EventDetailsResponse? Event);
+
+public record DeletingEventResult(bool IsSuccess, ReasonType ReasonType);
+
+public enum ReasonType
+{
+	None = 0,
+	EventNotFound = 1
+}
