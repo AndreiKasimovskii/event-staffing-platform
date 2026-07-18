@@ -89,7 +89,7 @@ app.MapDelete("/events/{id}", async (int id, IEventsService service, Cancellatio
         return result.ReasonType switch
         {
             ReasonType.EventNotFound => Results.NotFound(),
-            _ => Results.InternalServerError()
+            _ => Results.Problem(statusCode: StatusCodes.Status500InternalServerError)
         };
 
     return Results.NoContent();
