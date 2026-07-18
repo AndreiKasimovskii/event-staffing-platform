@@ -28,10 +28,9 @@ public interface IEventsRepository
 	Task<EventStorageEntity?> GetEventByIdAsync(int id, CancellationToken cancellationToken);
 
 	/// <summary>
-	/// 
+	/// Обновление мероприятия в БД
 	/// </summary>
-	/// <param name="entity"></param>
-	/// <param name="cancellationToken"></param>
-	/// <returns></returns>
+	/// <param name="entity">Сущность БД с обновленными данными</param>
+	/// <param name="cancellationToken">Токен отмены операции</param>
 	Task UpdateEventAsync(EventStorageEntity entity, CancellationToken cancellationToken);
 }

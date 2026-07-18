@@ -84,10 +84,20 @@ app.MapGet("/events/{id}", async (int id, IEventsService service, CancellationTo
 
 app.MapPut("/events/{id}", async (int id, EditEventRequest updatedEvent, IEventsService service, CancellationToken cancellationToken) =>
 {
-    var editingResult = await service.EditEventAsync(id, updatedEvent, cancellationToken);
-    if (!editingResult.IsSuccess)
-        return Results.NotFound();
-    return Results.NoContent();
+    try
+    {
+        var editingResult = await service.EditEventAsync(id, updatedEvent, cancellationToken);
+        if (!editingResult.IsSuccess)
+            return Results.NotFound();
+        return Results.NoContent();
+    }
+	catch (ArgumentException ex)
+	{
+		return Results.ValidationProblem(new Dictionary<string, string[]>
+		{
+			[ex.ParamName ?? "Event"] = [ex.Message]
+		});
+	}
 });
 
 app.Run();

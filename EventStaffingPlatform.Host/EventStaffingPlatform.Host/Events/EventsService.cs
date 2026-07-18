@@ -69,8 +69,8 @@ public class EventsService(IEventsRepository eventsRepository) : IEventsService
 		editedEvent.Title = request.Title;
 		editedEvent.Description = request.Description;
 		editedEvent.Address = request.Address;
-		editedEvent.StartEventDate = request.StartEventDate;
-		editedEvent.EndEventDate = request.EndEventDate;
+		editedEvent.StartEventDate = request.StartEventDate.ToUniversalTime();
+		editedEvent.EndEventDate = request.EndEventDate.ToUniversalTime();
 
 		await eventsRepository.UpdateEventAsync(editedEvent, cancellationToken);
 		return new(true, ReasonType.None);
