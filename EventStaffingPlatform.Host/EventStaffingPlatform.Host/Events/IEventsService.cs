@@ -11,7 +11,7 @@ public interface IEventsService
 	Task<EventListItemResponse[]> GetAllEventsAsync(CancellationToken cancellationToken);
 
 	/// <summary>
-	/// Получить актальные мероприятия
+	/// Получить актуальные мероприятия
 	/// </summary>
 	/// <param name="cancellationToken">Токен отмены операции</param>
 	/// <returns>Актуальные мероприятия</returns>
