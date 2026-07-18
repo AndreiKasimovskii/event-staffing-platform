@@ -78,7 +78,7 @@ app.MapGet("/events/{id}", async (int id, IEventsService service, CancellationTo
 {
     var gettingResult = await service.GetEventAsync(id, cancellationToken);
     if (!gettingResult.IsSuccess)
-        return Results.NotFound(gettingResult.Event);
+        return Results.NotFound();
     return Results.Ok(gettingResult.Event);
 });
 
