@@ -27,4 +27,26 @@ public class EventsService(IEventsRepository eventsRepository) : IEventsService
 
 		return await eventsRepository.CreateEventAsync(eventStorageEntity);
 	}
+
+	public async Task<EventListItemResponse[]> GetAllEventsAsync(CancellationToken cancellationToken)
+	{
+		var events = await eventsRepository.GetAllEventsAsync(cancellationToken);
+		return [.. events.Select(e => new EventListItemResponse(e.Id, e.Title, e.StartEventDate, e.EndEventDate))];
+	}
+
+	public async Task<EventListItemResponse[]> GetActualEventsAsync(CancellationToken cancellationToken)
+	{
+		var actualEvents = await eventsRepository.GetActualEventsAsync(DateTimeOffset.UtcNow, cancellationToken);
+		return [.. actualEvents.Select(e => new EventListItemResponse(e.Id, e.Title, e.StartEventDate, e.EndEventDate))];
+	}
+
+	public async Task<GettingEventResult> GetEventAsync(int id, CancellationToken cancellationToken)
+	{
+		var concreteEvent = await eventsRepository.GetEventByIdAsync(id, cancellationToken);
+		if (concreteEvent == null)
+			return new(false, null);
+		return new(true, new(concreteEvent.Id, concreteEvent.Title, concreteEvent.Description, concreteEvent.Address, concreteEvent.StartEventDate, concreteEvent.EndEventDate));
+	}
 }
+
+public record GettingEventResult(bool IsSuccess, EventDetailsResponse? Event);

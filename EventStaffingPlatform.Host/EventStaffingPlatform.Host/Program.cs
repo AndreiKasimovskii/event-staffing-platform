@@ -64,4 +64,22 @@ app.MapPost("/events/create", async (CreateEventRequest request, IEventsService 
     }
 });
 
+app.MapGet("/events", async (IEventsService service, CancellationToken cancellationToken) =>
+{
+    return await service.GetAllEventsAsync(cancellationToken);
+});
+
+app.MapGet("/events/actual", async (IEventsService service, CancellationToken cancellationToken) =>
+{
+    return await service.GetActualEventsAsync(cancellationToken);
+});
+
+app.MapGet("/events/{id}", async (int id, IEventsService service, CancellationToken cancellationToken) =>
+{
+    var gettingResult = await service.GetEventAsync(id, cancellationToken);
+    if (!gettingResult.IsSuccess)
+        return Results.NotFound();
+    return Results.Ok(gettingResult.Event);
+});
+
 app.Run();
