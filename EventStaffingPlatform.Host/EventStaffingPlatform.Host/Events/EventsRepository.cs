@@ -25,4 +25,10 @@ public class EventsRepository(EventDbContext context) : IEventsRepository
 	{
 		return await context.Events.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 	}
+
+	public async Task UpdateEventAsync(EventStorageEntity entity, CancellationToken cancellationToken)
+	{
+		context.Events.Update(entity);
+		await context.SaveChangesAsync(cancellationToken);
+	}
 }

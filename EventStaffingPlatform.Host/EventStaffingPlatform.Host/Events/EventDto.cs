@@ -5,3 +5,5 @@ public record CreateEventRequest(string Title, string? Description, string Addre
 public record EventListItemResponse(int Id, string Title, DateTimeOffset StartEventDate, DateTimeOffset EndEventDate);
 
 public record EventDetailsResponse(int Id, string Title, string? Description, string Address, DateTimeOffset StartEventDate, DateTimeOffset EndEventDate);
+
+public record EditEventRequest(string Title, string? Description, string Address, DateTimeOffset StartEventDate, DateTimeOffset EndEventDate);

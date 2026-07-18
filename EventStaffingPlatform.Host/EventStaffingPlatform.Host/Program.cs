@@ -82,4 +82,12 @@ app.MapGet("/events/{id}", async (int id, IEventsService service, CancellationTo
     return Results.Ok(gettingResult.Event);
 });
 
+app.MapPut("/events/{id}", async (int id, EditEventRequest updatedEvent, IEventsService service, CancellationToken cancellationToken) =>
+{
+    var editingResult = await service.EditEventAsync(id, updatedEvent, cancellationToken);
+    if (!editingResult.IsSuccess)
+        return Results.NotFound();
+    return Results.NoContent();
+});
+
 app.Run();
