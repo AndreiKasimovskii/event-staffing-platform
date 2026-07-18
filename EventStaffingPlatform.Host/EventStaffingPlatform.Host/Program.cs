@@ -82,4 +82,17 @@ app.MapGet("/events/{id}", async (int id, IEventsService service, CancellationTo
     return Results.Ok(gettingResult.Event);
 });
 
+app.MapDelete("/events/{id}", async (int id, IEventsService service, CancellationToken cancellationToken) =>
+{
+    var result = await service.DeleteEventAsync(id, cancellationToken);
+    if (!result.IsSuccess)
+        return result.ReasonType switch
+        {
+            ReasonType.EventNotFound => Results.NotFound(),
+            _ => Results.InternalServerError()
+        };
+
+    return Results.NoContent();
+});
+
 app.Run();
