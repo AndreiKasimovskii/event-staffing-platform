@@ -25,4 +25,6 @@ public interface IEventsService
 	/// <param name="cancellationToken">Токен отмены операции</param>
 	/// <returns>Данные мероприятия</returns>
 	Task<GettingEventResult> GetEventAsync(int id, CancellationToken cancellationToken);
+
+	Task<EditingEventResult> EditEventAsync(int id, EditEventRequest request, CancellationToken cancellationToken);
 }
